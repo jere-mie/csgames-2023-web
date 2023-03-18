@@ -26,8 +26,26 @@
         <input type="submit" value="Submit">
     </form>
 <script>
+    const url = "https://idserver.lostgit.xyz/connect/token";
+
     function submitForm(){
-        alert("form submittited!");
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const data = new FormData();
+        data.append('client_id', 'tenant1');
+        data.append('client_secret', 'dev');
+        data.append('grant_type', 'password');
+        data.append('password', password);
+        data.append('username', username);
+        fetch(url, {
+            method:"POST",
+            body:data,
+        }).then(response =>{
+            response.json()
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+        })
+        .catch(error => {console.log(error)});
     }
 </script>
 </body>
