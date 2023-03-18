@@ -1,6 +1,15 @@
 .center{
     text-align: center;
 }
+.hidden{
+    display: none;
+}
+#errormsg{
+    color: red;
+}
+#successmsg{
+    color: green;
+}
 nav {
     background-color: #333; /* Set the background color of the nav bar */
     overflow: hidden; /* Ensure that the nav bar doesn't overflow */

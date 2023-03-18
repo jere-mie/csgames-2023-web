@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>CS Games 2023</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.html">Log In</a></li>
+            <li><a href="signup.html">Sign Ups</a></li>            
+            <li><a href="logout.html">Log Out</a></li>
+        </ul>
+    </nav>
+    <h1>CS Games 2023 Web Competition Sign Up</h1>
+    <h2 id="errormsg" class="hidden"></h2>
+    <h2 id="successmsg" class="hidden"></h2>
+    <form id="signupform" onsubmit="submitForm();return false;">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+        <br>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+<script>
+    const url1 = "https://idserver.lostgit.xyz/connect/token";
+    const url2 = "https://idserver.lostgit.xyz/user/create";
+    const errormsg = document.getElementById("errormsg");
+    const successmsg = document.getElementById("successmsg");
+    const signupform = document.getElementById("signupform");
+
+    if(localStorage.getItem("access_token")){
+        signupform.setAttribute("class", "hidden");
+        errormsg.setAttribute("class", "");
+        errormsg.innerText = "Already logged in!";
+    }
+
+    function submitForm(){
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const jwtdata = new FormData();
+        jwtdata.append('client_id', 'tenant1');
+        jwtdata.append('client_secret', 'dev');
+        jwtdata.append('grant_type', 'client_credentials');
+
+        const userdata = new FormData();
+        userdata.append('password', password);
+        userdata.append('username', username);
+
+        fetch(url1, {
+            method:"POST",
+            body:jwtdata,
+        }).then(response =>{
+            response.json()
+            .then(data => {
+                token = data["access_token"];
+                console.log(token);
+                fetch(url2, {
+                    method:"POST",
+                    body:userdata,
+                    headers:{
+                        "Authorization": `Bearer ${token}`,
+                    }
+                }).then(response => {
+                    response.text()
+                    .then(data => {
+                        try {
+                            let retData = JSON.parse(data);
+                            console.log(retData);
+                            // console.log(retData['access_token']);
+                            // localStorage.setItem('access_token', retData['access_token']);
+                            // signupform.setAttribute("class", "hidden");
+                            // errormsg.setAttribute("class", "hidden");
+                            successmsg.setAttribute("class", "");
+                            successmsg.innerText = "User Created!";
+                        } catch (error) {
+                            console.log(error)
+                            successmsg.setAttribute("class", "hidden");
+                            errormsg.setAttribute('class', "");
+                            errormsg.innerText = data;
+                        }
+        
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })                    
+                }).catch(error => {
+                    console.log(error);
+                })
+            })
+        })
+
+
+    //     fetch(url, {
+    //         method:"POST",
+    //         body:data,
+    //     }).then(response =>{
+    //         response.text()
+    //         .then(data => {
+    //             try {
+    //                 let retData = JSON.parse(data);
+    //                 console.log(retData['access_token']);
+    //                 localStorage.setItem('access_token', retData['access_token']);
+    //                 signupform.setAttribute("class", "hidden");
+    //                 errormsg.setAttribute("class", "hidden");
+    //                 successmsg.setAttribute("class", "");
+    //                 successmsg.innerText = "Logged In!";
+    //             } catch (error) {
+    //                 console.log(error)
+    //                 const errormsg = document.getElementById('errormsg');
+    //                 successmsg.setAttribute("class", "hidden");
+    //                 errormsg.setAttribute('class', "");
+    //                 errormsg.innerText = data;
+    //             }
+    //             console.log(data);
+    //         })
+    //         .catch(error => console.log(error))
+    //     })
+    //     .catch(error => {console.log(error)});
+    }
+</script>
+</body>
+</html>

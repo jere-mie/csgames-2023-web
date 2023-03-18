@@ -12,11 +12,14 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="login.html">Log In</a></li>
-            <li><a href="signup.html">Sign Ups</a></li>
+            <li><a href="signup.html">Sign Up</a></li>            
+            <li><a href="logout.html">Log Out</a></li>
         </ul>
     </nav>
     <h1>CS Games 2023 Web Competition</h1>
-    <form onsubmit="submitForm();return false;">
+    <h2 id="errormsg" class="hidden"></h2>
+    <h2 id="successmsg" class="hidden"></h2>
+    <form id="loginform" onsubmit="submitForm();return false;">
         <label for="username">Username</label>
         <input type="text" name="username" id="username">
         <br>
@@ -27,6 +30,15 @@
     </form>
 <script>
     const url = "https://idserver.lostgit.xyz/connect/token";
+    const errormsg = document.getElementById("errormsg");
+    const successmsg = document.getElementById("successmsg");
+    const loginform = document.getElementById("loginform");
+
+    if(localStorage.getItem("access_token")){
+        loginform.setAttribute("class", "hidden");
+        errormsg.setAttribute("class", "");
+        errormsg.innerText = "Already logged in!";
+    }
 
     function submitForm(){
         const username = document.getElementById('username').value;
@@ -41,8 +53,25 @@
             method:"POST",
             body:data,
         }).then(response =>{
-            response.json()
-            .then(data => console.log(data))
+            response.text()
+            .then(data => {
+                try {
+                    let retData = JSON.parse(data);
+                    console.log(retData['access_token']);
+                    localStorage.setItem('access_token', retData['access_token']);
+                    loginform.setAttribute("class", "hidden");
+                    errormsg.setAttribute("class", "hidden");
+                    successmsg.setAttribute("class", "");
+                    successmsg.innerText = "Logged In!";
+                } catch (error) {
+                    console.log(error)
+                    const errormsg = document.getElementById('errormsg');
+                    successmsg.setAttribute("class", "hidden");
+                    errormsg.setAttribute('class', "");
+                    errormsg.innerText = data;
+                }
+                console.log(data);
+            })
             .catch(error => console.log(error))
         })
         .catch(error => {console.log(error)});
