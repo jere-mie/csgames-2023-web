@@ -1,3 +1,62 @@
 .center{
     text-align: center;
 }
+nav {
+    background-color: #333; /* Set the background color of the nav bar */
+    overflow: hidden; /* Ensure that the nav bar doesn't overflow */
+  }
+  
+  nav ul {
+    margin: 0; /* Remove any default margin */
+    padding: 0; /* Remove any default padding */
+    list-style: none; /* Remove the bullet points for the list items */
+  }
+  
+  nav li {
+    float: left; /* Float the list items to the left */
+  }
+  
+  nav li a {
+    display: block; /* Display the links as block-level elements */
+    color: white; /* Set the text color of the links */
+    text-align: center; /* Center the text within the links */
+    padding: 16px; /* Add some padding around the links */
+    text-decoration: none; /* Remove any underline from the links */
+  }
+  
+  nav li a:hover {
+    background-color: #111; /* Change the background color of the links when hovered */
+  }
+
+  form {
+    margin-top: 20px; /* Add some space above the form */
+  }
+  
+  label {
+    display: block; /* Display each label on a separate line */
+    margin-bottom: 5px; /* Add some space below each label */
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    display: block; /* Display the inputs on a separate line */
+    margin-bottom: 10px; /* Add some space below each input */
+    padding: 5px; /* Add some padding to the inputs */
+    width: 100%; /* Set the width of the inputs to 100% */
+    box-sizing: border-box; /* Include padding and border in the width */
+    border: 1px solid #ccc; /* Add a border around the inputs */
+    border-radius: 3px; /* Round the corners of the inputs */
+  }
+  
+  input[type="submit"] {
+    background-color: #333; /* Set the background color of the button */
+    color: white; /* Set the text color of the button */
+    padding: 10px 20px; /* Add some padding to the button */
+    border: none; /* Remove the border from the button */
+    border-radius: 3px; /* Round the corners of the button */
+    cursor: pointer; /* Change the cursor to a pointer when hovering over the button */
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #111; /* Change the background color of the button when hovered */
+  }
