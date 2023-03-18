@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>CS Games 2023</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.html">Log In</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="logout.html">Log Out</a></li>
+            <li><a href="repositories.html">Repositories</a></li>
+        </ul>
+    </nav>
+<h1>CS Games 2023 Web Competition - Repositories</h1>
+<div id="repos">
+    <div class="repo">
+        <h2>Title: Flask</h2>
+        <h3>License: MIT</h3>
+        <p>Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam ad iure quia sapiente exercitationem quidem sunt facere? Vitae, nemo laboriosam.</p>
+        <hr>
+    </div>
+</div>
+<script>
+    const url = "https://repo.lostgit.xyz/repositories";
+    let token = localStorage.getItem('access_token');
+    if(!token){
+        alert("You must log in first!")
+        document.location.href = "login.html";
+    }
+    fetch(url, {
+        method:"GET",
+        headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+    }).then(response => {
+        response.json()
+        .then(data => {
+            let repos = data['repositories'];
+            let out = ''
+            for(const repo of repos){
+                out+=`
+                <div class="repo">
+                    <h2>Title: ${repo['name']}</h2>
+                    <h3>License: ${repo['license']}</h3>
+                    <p>Description: ${repo['description']}</p>
+                    <hr>
+                </div>
+            `
+            }
+            document.getElementById('repos').innerHTML = out;
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }).catch(error => {
+        console.log(error);
+    })
+
+
+</script>
+
+</body>
+</html>
